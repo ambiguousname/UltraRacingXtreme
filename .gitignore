@@ -1,0 +1,7 @@
+# NPM stuff:
+node_modules/
+package-lock.json
+
+# Webpack:
+dist/*
+!dist/index.html
