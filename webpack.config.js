@@ -4,11 +4,23 @@ module.exports = {
 	mode: "development",
 	entry: {
 		index: {
-			import: './src/index.js',
+			import: './src/index.ts',
 			dependOn: ['phaser', 'knobs'],
 		},
 		phaser: 'phaser',
 		knobs: '@yaireo/knobs'
+	},
+	module: {
+		rules: [
+			{
+			test: /\.tsx?$/,
+			use: 'ts-loader',
+			exclude: /node_modules/,
+			},
+		],
+	},
+	resolve: {
+		extensions: ['.tsx', '.ts', '.js'],
 	},
 	output: {
 		filename: '[name].bundle.js',

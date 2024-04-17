@@ -1,7 +1,11 @@
 import Phaser from "phaser";
 import { Race } from "./scenes/race";
 
-new Phaser.Game({
+declare global {
+	interface Window { game : Phaser.Game }
+}
+
+window.game = new Phaser.Game({
 	type: Phaser.AUTO,
 	width: window.innerWidth,
 	height: window.innerHeight,
@@ -12,7 +16,8 @@ new Phaser.Game({
 		matter: {
 			debug: true,
 			gravity: {
-				y: 0
+				y: 0,
+				x: 0
 			}
 		}
 	},
