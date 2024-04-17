@@ -63,7 +63,15 @@ export class Car extends Phaser.GameObjects.GameObject {
 		this.#matter = scene.matter;
 		this.#world = this.#matter.world;
 
-		this.body = scene.matter.bodies.rectangle(x, y, width, height);
+		this.body = scene.matter.bodies.rectangle(x, y, width, height, {
+			render: {
+				fillColor: Math.random() * 0xffffff
+			}
+		});
+		this.body.frictionAir = Race.carAirFriction;
+		this.body.frictionStatic = Race.carStaticFriction;
+		this.body.friction = Race.carFriction;
+		this.#matter.body.setMass(this.body, Race.carMass);
 		this.body.gameObject = this;
 		(this.body as any).destroy = (() => {
 			this.#world.remove(this.body, true);
@@ -92,6 +100,11 @@ export class Car extends Phaser.GameObjects.GameObject {
 	}
 
 	preUpdate(time : number, delta : number) {
+		// let mag = this.#matter.vector.magnitude(this.body.velocity);
+		// if (mag > Race.maxCarVelocity) {
+		// 	let norm = this.#matter.vector.normalise(this.body.velocity);
+		// 	this.#matter.body.setVelocity(this.body, this.#matter.vector.create(norm.x * Race.maxCarVelocity, norm.y * Race.maxCarVelocity));
+		// }
 		let staleRounding = Math.pow(10, Race.carStalePos);
 		let rounded = Math.round(this.getPositionOnCurve() * staleRounding)/staleRounding;
 		

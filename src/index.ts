@@ -14,7 +14,10 @@ window.game = new Phaser.Game({
 	physics: {
 		default: 'matter',
 		matter: {
-			debug: true,
+			debug: {
+				showVelocity: true,
+				renderFill: true,
+			},
 			gravity: {
 				y: 0,
 				x: 0

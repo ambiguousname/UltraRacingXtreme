@@ -46,14 +46,51 @@ export class Race extends Phaser.Scene {
 						step: 1,
 						onChange: this.applyValue.bind(this, "carStalePos")
 					},
+					"Car Physics",
+					{
+						label: "Mass",
+						type: "range",
+						min: 1,
+						value: 100,
+						max: 1200,
+						step: 1,
+						onChange: this.applyValue.bind(this, "carMass")
+					},
 					{
 						label: "Wheel Acceleration",
 						type: "range",
-						value: 0.00001,
+						value: 0.001,
 						min: 0,
-						max: 0.00005,
-						step: 0.00001,
+						max: 0.05,
+						step: 0.0001,
 						onChange: this.applyValue.bind(this, "carAcceleration")
+					},
+					{
+						label: "Car Friction",
+						type: "range",
+						value: 0.1,
+						min: 0,
+						max: 1,
+						step: 0.01,
+						onChange: this.applyValue.bind(this, "carFriction")
+					},
+					{
+						label: "Car Static Friction",
+						type: "range",
+						value: 0.5,
+						min: 0,
+						max: 100,
+						step: 0.5,
+						onChange: this.applyValue.bind(this, "carStaticFriction")
+					},
+					{
+						label: "Car Air Friction",
+						type: "range",
+						value: 0.01,
+						min: 0,
+						max: 0.2,
+						step: 0.005,
+						onChange: this.applyValue.bind(this, "carAirFriction")
 					},
 					"Track",
 					{
@@ -135,9 +172,14 @@ export class Race extends Phaser.Scene {
 
 	static numCars = 1;
 	static carScale = 1;
+	static carMass = 0.8;
 	static carLookAhead = 0.1;
 	static carStalePos = 1;
 	static carAcceleration = 0.00001;
+	static carAirFriction = 0.01;
+	static carStaticFriction = 0.5;
+	static carFriction = 0.1;
+	static maxCarVelocity = 100;
 	drawCars(){
 		let carWidth = 20 * Race.carScale;
 		let carHeight = 40 * Race.carScale;
