@@ -1,4 +1,5 @@
 import Knobs from "@yaireo/knobs";
+import { Car } from "../objects/car";
 
 export class Race extends Phaser.Scene {
 	static knobs : Knobs;
@@ -123,13 +124,13 @@ export class Race extends Phaser.Scene {
 			let side = ((i % 2 === 0) ? -1 : 1);
 			p = p.add(new Phaser.Math.Vector2(Math.cos(a) * side * carWidth, Math.sin(a) * side * 0.5 * carHeight));
 
-			let car = this.matter.add.rectangle(p.x, p.y, carWidth, carHeight);
+			let car = new Car(this, p.x, p.y, carWidth, carHeight);
 
 			// let to = prevPoint.subtract(p);
 			let tangent = this.curve.getTangentAt(curveT);
-			this.matter.body.rotate(car, tangent.angle() - Math.PI/2);
+			this.matter.body.rotate(car.body, tangent.angle() - Math.PI/2);
 
-			this.cars.push(car);
+			this.cars.push(car.body);
 			curveT -= Race.carScale * 0.01;
 			if (curveT < 0) {
 				curveT = 1;
