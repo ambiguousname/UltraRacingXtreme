@@ -5,9 +5,10 @@ module.exports = {
 	entry: {
 		index: {
 			import: './src/index.js',
-			dependOn: 'phaser',
+			dependOn: ['phaser', 'knobs'],
 		},
-		phaser: 'phaser'
+		phaser: 'phaser',
+		knobs: '@yaireo/knobs'
 	},
 	output: {
 		filename: '[name].bundle.js',
@@ -19,4 +20,5 @@ module.exports = {
 	optimization: {
 		runtimeChunk: 'single',
 	},
+	watch: true,
 };

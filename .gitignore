@@ -5,3 +5,4 @@ package-lock.json
 # Webpack:
 dist/*
 !dist/index.html
+!dist/assets/
