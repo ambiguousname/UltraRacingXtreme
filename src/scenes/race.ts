@@ -1,5 +1,5 @@
 import Knobs from "@yaireo/knobs";
-import { Car } from "../objects/car";
+import { Car, DriveWheel, FreeWheel } from "../objects/car";
 
 export class Race extends Phaser.Scene {
 	static knobs : Knobs;
@@ -27,6 +27,15 @@ export class Race extends Phaser.Scene {
 						max: 100,
 						step: 1,
 						onChange: this.applyValue.bind(this, "numCars")
+					},
+					{
+						label: "Car Lookahead",
+						type: "range",
+						value: 0.1,
+						min: 0,
+						max: 1,
+						step: 0.01,
+						onChange: this.applyValue.bind(this, "carLookAhead")
 					},
 					"Track",
 					{
@@ -108,6 +117,8 @@ export class Race extends Phaser.Scene {
 
 	static numCars = 1;
 	static carScale = 1;
+	static carLookAhead = 0.1;
+	static carAcceleration = 0.00001;
 	drawCars(){
 		let carWidth = 20 * Race.carScale;
 		let carHeight = 40 * Race.carScale;
@@ -120,7 +131,7 @@ export class Race extends Phaser.Scene {
 			let side = ((i % 2 === 0) ? -1 : 1);
 			p = p.add(new Phaser.Math.Vector2(Math.cos(a) * side * carWidth, Math.sin(a) * side * 0.5 * carHeight));
 
-			let car = new Car(this, p.x, p.y, carWidth, carHeight);
+			let car = new Car(this, p.x, p.y, carWidth, carHeight, [FreeWheel, FreeWheel, DriveWheel, DriveWheel]);
 
 			// let to = prevPoint.subtract(p);
 			let tangent = this.curve.getTangentAt(curveT);
@@ -131,6 +142,5 @@ export class Race extends Phaser.Scene {
 				curveT = 1;
 			}
 		}
-
 	}
 }
