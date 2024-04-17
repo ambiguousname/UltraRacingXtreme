@@ -108,11 +108,7 @@ export class Race extends Phaser.Scene {
 
 	static numCars = 1;
 	static carScale = 1;
-	cars : Array<MatterJS.BodyType>;
 	drawCars(){
-		this.cars = new Array();
-
-
 		let carWidth = 20 * Race.carScale;
 		let carHeight = 40 * Race.carScale;
 
@@ -130,7 +126,6 @@ export class Race extends Phaser.Scene {
 			let tangent = this.curve.getTangentAt(curveT);
 			this.matter.body.rotate(car.body, tangent.angle() - Math.PI/2);
 
-			this.cars.push(car.body);
 			curveT -= Race.carScale * 0.01;
 			if (curveT < 0) {
 				curveT = 1;

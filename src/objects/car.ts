@@ -1,20 +1,46 @@
+import { Race } from "../scenes/race";
+
 export class Car extends Phaser.GameObjects.GameObject {
 	body : MatterJS.BodyType;
-	world : Phaser.Physics.Matter.World;
+	#curve : Phaser.Curves.Ellipse;
+	#world : Phaser.Physics.Matter.World;
+	#matter : Phaser.Physics.Matter.MatterPhysics;
 
-	constructor(scene : Phaser.Scene, x : number, y : number, width : number, height : number) {
+	constructor(scene : Race, x : number, y : number, width : number, height : number) {
 		super(scene, "car");
 
-		this.world = scene.matter.world;
+		this.#curve = scene.curve;
+
+		this.#matter = scene.matter;
+		this.#world = this.#matter.world;
 
 		this.body = scene.matter.bodies.rectangle(x, y, width, height);
 		this.body.gameObject = this;
-		this.world.add(this.body);
+		this.#world.add(this.body);
 
-		scene.sys.updateList.add(this);
+		this.addToUpdateList();
+	}
+
+	get position() {
+		return this.body.position;
+	}
+
+	getPositionOnCurve() : number {
+		let relativeCoord = this.#matter.vector.sub(this.position, (this.scene as Race).center.position);
+		let u = this.#matter.vector.angle(relativeCoord, {x: 0, y: 1})/(2 * Math.PI);
+		return u;
 	}
 
 	preUpdate(time : number, delta : number) {
-		this.scene.matter.body.applyForce(this.body, this.body.position, {x: 0.001, y: 0});
+		let u = Math.fround(this.getPositionOnCurve()) + 0.1;
+		if (u > 1) {
+			u = 0;
+		}
+		let goal = this.#curve.getPointAt(u);
+		let dir = this.#matter.vector.sub(goal, this.body.position);
+		dir = this.#matter.vector.normalise(dir);
+		dir = this.#matter.vector.mult(dir, 0.0001);
+
+		this.#matter.body.applyForce(this.body, this.body.position, dir);
 	}
 }
