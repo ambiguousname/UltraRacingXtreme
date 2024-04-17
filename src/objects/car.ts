@@ -92,22 +92,27 @@ export class Car extends Phaser.GameObjects.GameObject {
 	}
 
 	preUpdate(time : number, delta : number) {
-		let u = Math.fround(this.getPositionOnCurve()) + Race.carLookAhead;
+		let staleRounding = Math.pow(10, Race.carStalePos);
+		let rounded = Math.round(this.getPositionOnCurve() * staleRounding)/staleRounding;
+		
+		let graphics = (this.scene as Race).graphics;
+		graphics.fillStyle(0xff0000, 1);
+
+
+		let u = rounded + Race.carLookAhead;
 		if (u > 1) {
 			u = 0;
 		} else if (u < 0) {
-			u = 1;
+			u = 1 + u;
 		}
 		let goal = this.#curve.getPointAt(u);
-		let lookAhead = this.#curve.getTangentAt(u);
-		let futureGoal = this.#matter.vector.add(goal, lookAhead);
+		// graphics.fillPoint(goal.x, goal.y, 10);
+		// let lookAhead = this.#curve.getTangentAt(u);
 
-		let dir = this.#matter.vector.sub(futureGoal, this.body.position);
+		let dir = this.#matter.vector.sub(goal, this.body.position);
 		dir = this.#matter.vector.normalise(dir);
 
 		
-		let graphics = (this.scene as Race).graphics;
-		graphics.fillStyle(0xfffff, 1);
 
 		for (let wheel of this.#wheels) {
 			let outForce = this.#matter.vector.create(0, 0);

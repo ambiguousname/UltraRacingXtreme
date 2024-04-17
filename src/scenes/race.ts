@@ -38,6 +38,15 @@ export class Race extends Phaser.Scene {
 						onChange: this.applyValue.bind(this, "carLookAhead")
 					},
 					{
+						label: "Lookahead Staleness",
+						type: "range",
+						value: 1,
+						min: 1,
+						max: 4,
+						step: 1,
+						onChange: this.applyValue.bind(this, "carStalePos")
+					},
+					{
 						label: "Wheel Acceleration",
 						type: "range",
 						value: 0.00001,
@@ -127,6 +136,7 @@ export class Race extends Phaser.Scene {
 	static numCars = 1;
 	static carScale = 1;
 	static carLookAhead = 0.1;
+	static carStalePos = 1;
 	static carAcceleration = 0.00001;
 	drawCars(){
 		let carWidth = 20 * Race.carScale;
