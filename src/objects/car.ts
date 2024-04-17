@@ -16,6 +16,10 @@ export class Car extends Phaser.GameObjects.GameObject {
 
 		this.body = scene.matter.bodies.rectangle(x, y, width, height);
 		this.body.gameObject = this;
+		(this.body as any).destroy = (() => {
+			this.#world.remove(this.body, true);
+			this.body.gameObject = null;
+		}).bind(this);
 		this.#world.add(this.body);
 
 		this.addToUpdateList();
