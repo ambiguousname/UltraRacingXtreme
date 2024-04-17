@@ -78,7 +78,8 @@ export class Race extends Phaser.Scene {
 
 	static ellipseSize = 300;
 	curve : Phaser.Curves.Ellipse;
-	drawCurve(){
+	center : MatterJS.BodyType;
+	drawCurve() {
 		// Quick and dirty from https://stackoverflow.com/questions/70491667/matter-js-how-to-draw-an-ellipse
 		let ellipseVerticesArray : Array<{x: number, y: number}> = [];
 
@@ -92,13 +93,13 @@ export class Race extends Phaser.Scene {
 			ellipseVerticesArray.push({ x: x, y: y });
 		}
 
-		let center = this.matter.add.fromVertices(this.game.canvas.width/2, this.game.canvas.height/2, ellipseVerticesArray);
-		center.isStatic = true;
+		this.center = this.matter.add.fromVertices(this.game.canvas.width/2, this.game.canvas.height/2, ellipseVerticesArray);
+		this.center.isStatic = true;
 
-		let halfwayX = (ellipseVerticesArray[0].x + center.position.x)/2 - center.position.x;
+		let halfwayX = (ellipseVerticesArray[0].x + this.center.position.x)/2 - this.center.position.x;
 
 		// Curve for the cars to follow:
-		this.curve = new Phaser.Curves.Ellipse(center.position.x, center.position.y, halfwayX, ellipseFlatness * halfwayX);
+		this.curve = new Phaser.Curves.Ellipse(this.center.position.x, this.center.position.y, halfwayX, ellipseFlatness * halfwayX);
 
         this.graphics.lineStyle(2, 0xffffff, 1);
 		this.curve.draw(this.graphics);
@@ -106,13 +107,34 @@ export class Race extends Phaser.Scene {
 
 	static numCars = 1;
 	static carScale = 1;
-	cars : Phaser.GameObjects.Group;
+	cars : Array<MatterJS.BodyType>;
 	drawCars(){
-		this.cars = this.add.group();
+		this.cars = new Array();
+
+
+		let carWidth = 20 * Race.carScale;
+		let carHeight = 40 * Race.carScale;
+
+		let curveT = 0.3;
+
 		for (let i = 0; i < Race.numCars; i++) {
-			this.matter.add.rectangle(0, 0, Race.carScale * 20, Race.carScale * 40);
+			let p = this.curve.getPointAt(curveT);
+			let a = new Phaser.Math.Vector2(p).subtract(this.center.position).angle();
+			let side = ((i % 2 === 0) ? -1 : 1);
+			p = p.add(new Phaser.Math.Vector2(Math.cos(a) * side * carWidth, Math.sin(a) * side * 0.5 * carHeight));
+
+			let car = this.matter.add.rectangle(p.x, p.y, carWidth, carHeight);
+
+			// let to = prevPoint.subtract(p);
+			let tangent = this.curve.getTangentAt(curveT);
+			this.matter.body.rotate(car, tangent.angle() - Math.PI/2);
+
+			this.cars.push(car);
+			curveT -= Race.carScale * 0.01;
+			if (curveT < 0) {
+				curveT = 1;
+			}
 		}
 
-		let p = this.curve.getPoint(0);
 	}
 }
