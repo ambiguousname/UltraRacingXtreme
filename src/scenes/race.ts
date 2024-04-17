@@ -37,6 +37,15 @@ export class Race extends Phaser.Scene {
 						step: 0.01,
 						onChange: this.applyValue.bind(this, "carLookAhead")
 					},
+					{
+						label: "Wheel Acceleration",
+						type: "range",
+						value: 0.00001,
+						min: 0,
+						max: 0.00005,
+						step: 0.00001,
+						onChange: this.applyValue.bind(this, "carAcceleration")
+					},
 					"Track",
 					{
 						label: "Track Size",
@@ -55,7 +64,7 @@ export class Race extends Phaser.Scene {
 	}
 
 	applyValue(prop : string, v : any) {
-		(Race as any)[prop] = v.target.value;
+		(Race as any)[prop] = parseFloat(v.target.value);
 		this.reload();
 	}
 

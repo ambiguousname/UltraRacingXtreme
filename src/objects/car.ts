@@ -35,8 +35,8 @@ export class DriveWheel extends Wheel {
 		// let worldRot = Math.max(Math.min(lerp, this.rotClamp[1]), this.rotClamp[0]);
 		// this.rotation = worldRot - this.attachedBody.angle;
 
-		outForce.x = direction.x * 0.00001 * delta;
-		outForce.y = direction.y * 0.00001 * delta;
+		outForce.x = direction.x * Race.carAcceleration * delta;
+		outForce.y = direction.y * Race.carAcceleration * delta;
 	}
 }
 
@@ -92,7 +92,7 @@ export class Car extends Phaser.GameObjects.GameObject {
 	}
 
 	preUpdate(time : number, delta : number) {
-		let u = Math.fround(this.getPositionOnCurve()) + 0.1;
+		let u = Math.fround(this.getPositionOnCurve()) + Race.carLookAhead;
 		if (u > 1) {
 			u = 0;
 		} else if (u < 0) {
