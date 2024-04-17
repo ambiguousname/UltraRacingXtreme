@@ -35,11 +35,13 @@ export class Car extends Phaser.GameObjects.GameObject {
 		let u = Math.fround(this.getPositionOnCurve()) + 0.1;
 		if (u > 1) {
 			u = 0;
+		} else if (u < 0) {
+			u = 1;
 		}
 		let goal = this.#curve.getPointAt(u);
 		let dir = this.#matter.vector.sub(goal, this.body.position);
 		dir = this.#matter.vector.normalise(dir);
-		dir = this.#matter.vector.mult(dir, 0.0001);
+		dir = this.#matter.vector.mult(dir, 0.001);
 
 		this.#matter.body.applyForce(this.body, this.body.position, dir);
 	}
