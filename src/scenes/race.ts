@@ -1,5 +1,6 @@
 import Knobs from "@yaireo/knobs";
 import { Car, DriveWheel, FreeWheel } from "../objects/car";
+import { ObstacleManager } from "../obstacles/obstacleManager";
 
 export class Race extends Phaser.Scene {
 	static knobs : Knobs;
@@ -105,7 +106,9 @@ export class Race extends Phaser.Scene {
 				]
 			};
 			Race.knobs = new Knobs(settings);
+			ObstacleManager.loadKnobs(this.reload.bind(this));
 		}
+
 		Race.knobs.render();
 	}
 
@@ -128,6 +131,7 @@ export class Race extends Phaser.Scene {
 	}
 
 	graphics : Phaser.GameObjects.Graphics;
+	obstacleManager : ObstacleManager;
 
 	create() {
 		Race.knobs.toggle(true);
@@ -139,6 +143,8 @@ export class Race extends Phaser.Scene {
 		
 		this.drawCurve();
 		this.drawCars();
+
+		this.obstacleManager = new ObstacleManager(this);
 	}
 
 	static ellipseSize = 300;
@@ -203,5 +209,9 @@ export class Race extends Phaser.Scene {
 				curveT = 1;
 			}
 		}
+	}
+
+	update(time: number, delta: number): void {
+		this.obstacleManager.update();
 	}
 }
