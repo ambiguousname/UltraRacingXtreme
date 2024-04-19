@@ -12,7 +12,7 @@ export class Piston extends Obstacle {
 		super(scene);
 		this.#matter = scene.matter;
 		this.pistonObj = scene.matter.add.rectangle(-100, -100, 200, 200);
-		this.pistonObj.mass = 500;
+		this.pistonObj.mass = 1000;
 	}
 
 	firingTimer = 0;
@@ -21,7 +21,7 @@ export class Piston extends Obstacle {
 		if (this.firingTimer <= 0) {
 			this.#matter.body.setPosition(this.pistonObj, {x: 100, y: 100}, false);
 			
-			this.fireDirection = {x: 50, y: 0};
+			this.fireDirection = {x: 20, y: 0};
 			this.firingTimer = this.scene.time.now;
 		}
 	}
