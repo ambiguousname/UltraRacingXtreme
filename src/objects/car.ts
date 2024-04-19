@@ -99,6 +99,7 @@ export class Car extends Phaser.GameObjects.GameObject {
 		return u;
 	}
 
+	forceOutMult = 1;
 	preUpdate(time : number, delta : number) {
 		// let mag = this.#matter.vector.magnitude(this.body.velocity);
 		// if (mag > Race.maxCarVelocity) {
@@ -138,7 +139,7 @@ export class Car extends Phaser.GameObjects.GameObject {
 			// graphics.fillStyle(0xff0000, 1);
 			// graphics.fillPoint(other_p.x, other_p.y, 1);
 
-			this.#matter.body.applyForce(this.body, wheel.worldPosition, outForce);
+			this.#matter.body.applyForce(this.body, wheel.worldPosition, this.#matter.vector.mult(outForce, this.forceOutMult));
 		}
 
 	}

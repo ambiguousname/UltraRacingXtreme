@@ -6,7 +6,7 @@ export abstract class Obstacle {
 		this.scene = scene;
 	}
 
-	static knobs(reload : Function): KnobsSetting { return {}; }
+	static knobs(reload : Function): Array<KnobsSetting> { return []; }
 	abstract fire() : void;
 	abstract stopFire() : void;
 	abstract update() : void;

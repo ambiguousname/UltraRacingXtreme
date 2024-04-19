@@ -3,6 +3,7 @@ import { Race } from "../scenes/race";
 import { Obstacle } from "./obstacle";
 import { Wind } from "./wind";
 import { Piston } from "./piston";
+import { SpeedUp } from "./speedUp";
 
 export class ObstacleManager {
 	scene : Phaser.Scene;
@@ -16,12 +17,14 @@ export class ObstacleManager {
 		this.obstacles = new Array();
 		this.obstacles.push(new Wind(scene));
 		this.obstacles.push(new Piston(scene));
+		this.obstacles.push(new SpeedUp(scene));
 	}
 
 	static loadKnobs(reload : Function) {
 		Race.knobs.knobs = [...Race.knobs.knobs, ...[ "Obstacles",
-			Wind.knobs(reload),
-			Piston.knobs(reload),
+			...Wind.knobs(reload),
+			...Piston.knobs(reload),
+			...SpeedUp.knobs(reload),
 		]];
 	}
 

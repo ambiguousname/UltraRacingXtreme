@@ -2,8 +2,8 @@ import { KnobsSetting } from "@yaireo/knobs";
 import { Obstacle } from "./obstacle";
 
 export class Wind extends Obstacle {
-	static override knobs(reload : Function): KnobsSetting {
-		return {
+	static override knobs(reload : Function): Array<KnobsSetting> {
+		return [{
 			label: "Wind Strength",
 			type: "range",
 			value: 1,
@@ -11,7 +11,7 @@ export class Wind extends Obstacle {
 			max: 5,
 			step: 0.01,
 			onChange: (v) => { Wind.windStrength = parseFloat(v.target.value); }
-		};
+		}];
 	}
 
 	static windStrength = 1;
