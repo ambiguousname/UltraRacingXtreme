@@ -55,10 +55,8 @@ export class SpeedUp extends Obstacle {
 	speedActive : boolean;
 	fire() {
 		if ((this.powerupObj === undefined || this.powerupObj === null) && (this.speedUpCar === undefined || this.speedUpCar === null)){
-			this.powerupObj = this.#matter.add.circle(200, this.scene.game.canvas.height - 200, 20, {
-				isSensor: true,
-				isStatic: true
-			});
+			this.powerupObj = this.#matter.add.circle(200, this.scene.game.canvas.height - 200, 20);
+			this.powerupObj.mass = 1000;
 		}
 	}
 	

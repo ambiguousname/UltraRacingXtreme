@@ -4,6 +4,7 @@ import { Obstacle } from "./obstacle";
 import { Wind } from "./wind";
 import { Piston } from "./piston";
 import { SpeedUp } from "./speedUp";
+import { Mine } from "./mine";
 
 export class ObstacleManager {
 	scene : Phaser.Scene;
@@ -18,6 +19,7 @@ export class ObstacleManager {
 		this.obstacles.push(new Wind(scene));
 		this.obstacles.push(new Piston(scene));
 		this.obstacles.push(new SpeedUp(scene));
+		this.obstacles.push(new Mine(scene));
 	}
 
 	static loadKnobs(reload : Function) {
@@ -25,6 +27,7 @@ export class ObstacleManager {
 			...Wind.knobs(reload),
 			...Piston.knobs(reload),
 			...SpeedUp.knobs(reload),
+			...Mine.knobs(reload),
 		]];
 	}
 
