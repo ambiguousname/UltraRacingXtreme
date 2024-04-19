@@ -2,10 +2,6 @@ import { KnobsSetting } from "@yaireo/knobs";
 import { Obstacle } from "./obstacle";
 
 export class Wind extends Obstacle {
-	constructor(scene : Phaser.Scene) {
-		super(scene)
-	}
-
 	static override knobs(reload : Function): KnobsSetting {
 		return {
 			label: "Wind Strength",

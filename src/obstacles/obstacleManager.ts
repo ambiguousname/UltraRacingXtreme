@@ -2,6 +2,7 @@ import { KnobsSetting } from "@yaireo/knobs";
 import { Race } from "../scenes/race";
 import { Obstacle } from "./obstacle";
 import { Wind } from "./wind";
+import { Piston } from "./piston";
 
 export class ObstacleManager {
 	scene : Phaser.Scene;
@@ -14,11 +15,13 @@ export class ObstacleManager {
 		
 		this.obstacles = new Array();
 		this.obstacles.push(new Wind(scene));
+		this.obstacles.push(new Piston(scene));
 	}
 
 	static loadKnobs(reload : Function) {
 		Race.knobs.knobs = [...Race.knobs.knobs, ...[ "Obstacles",
-			Wind.knobs(reload)
+			Wind.knobs(reload),
+			Piston.knobs(reload),
 		]];
 	}
 
